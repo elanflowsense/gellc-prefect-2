@@ -1,0 +1,26 @@
+# Prefect deployment configuration
+name: gellc-prefect-flows
+
+# Build configuration (optional for cloud deployments)
+build: null
+
+# Push configuration (optional - for storing code in S3)
+push: null
+
+# Pull configuration
+pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /app
+
+# Deployments
+deployments:
+  - name: my-first-flow-ecs
+    version: "1.0.0"
+    tags: ["ecs", "gellc", "production"]
+    description: "GELLC Prefect flow running on ECS via Prefect Cloud"
+    entrypoint: my_prefect_flow.py:my_first_flow
+    parameter_defaults: {}
+    work_pool:
+      name: gellc-ecs-pool
+      work_queue_name: default
+    schedules: []

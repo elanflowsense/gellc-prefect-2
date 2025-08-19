@@ -1,0 +1,61 @@
+version: '1.0.0'
+config-version: 2
+profile: 'snowflake_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+seed-paths: ["data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Claymore configuration
+vars:
+  'claymore_core:all_business_objects': [
+    {
+      "package": "claymore_core",
+      "record_type_singular": "person",
+      "record_type_plural": "people"
+    },
+    {
+      "package": "claymore_lending",
+      "record_type_singular": "payment",
+      "record_type_plural": "payments"
+    },
+    {
+      "package": "claymore_lending",
+      "record_type_singular": "loan",
+      "record_type_plural": "loans"
+    },
+    {
+      "package": "claymore_crm",
+      "record_type_singular": "deal",
+      "record_type_plural": "deals"
+    }
+  ]
+
+# Exclude __init__.py files from being parsed as models
+models:
+    estrellacash:
+        source:
+            schema: source
+        reporting:
+            schema: reporting
+        common:
+            schema: common
+        marts:
+            schema: marts
+        unioned:
+            schema: unioned
+        algorithms:
+            schema: algorithms
+        orchestration:
+            schema: orchestration
+        exports:
+            schema: exports
+
+# Exclude patterns and problematic models
+exclude: ["**/__init__.py""]
+
+# Disable partial parsing to avoid issues
+partial_parse: false 

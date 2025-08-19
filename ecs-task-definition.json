@@ -1,0 +1,37 @@
+{
+  "family": "gellc-prefect-task",
+  "networkMode": "awsvpc",
+  "taskRoleArn": "arn:aws:iam::576671272815:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::576671272815:role/ecsTaskExecutionRole",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "containerDefinitions": [
+    {
+      "name": "gellc-prefect-container",
+      "image": "576671272815.dkr.ecr.us-east-1.amazonaws.com/gellc-prefect:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "PYTHONPATH",
+          "value": "/app"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/gellc-prefect-task",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}

@@ -1,19 +1,21 @@
-from prefect import flow, task
+from prefect import flow, task, get_run_logger
 
 @task
 def hello_task(name: str = "World"):
     """Simple hello task"""
+    logger = get_run_logger()
     message = f"Hello {name} from ECS!"
-    print(message)
-    print("✅ Running on ECS infrastructure!")
+    logger.info(message)
+    logger.info("✅ Running on ECS infrastructure!")
     return message
 
 @flow
 def hello_flow(name: str = "World"):
     """Simple hello flow"""
-    print(f"🚀 Starting flow for: {name}")
+    logger = get_run_logger()
+    logger.info(f"🚀 Starting flow for: {name}")
     result = hello_task(name)
-    print(f"📊 Result: {result}")
+    logger.info(f"📊 Result: {result}")
     return result
 
 if __name__ == "__main__":
